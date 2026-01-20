@@ -1,4 +1,5 @@
 import { apiConfig, getApiUrl } from '@/config/api'
+import { apiLogger } from './api-logger'
 
 /**
  * Типы для API ответов
@@ -47,6 +48,9 @@ class ApiClient {
       ? endpoint 
       : `${this.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`
     
+    const method = options.method || 'GET'
+    const startTime = Date.now()
+
     const config: RequestInit = {
       ...options,
       headers: {
@@ -61,14 +65,55 @@ class ApiClient {
         signal: AbortSignal.timeout(apiConfig.timeout),
       })
 
+      const responseTime = Date.now() - startTime
+      const responseSize = response.headers.get('content-length')
+        ? parseInt(response.headers.get('content-length') || '0', 10)
+        : undefined
+
+      // Логируем успешный запрос
+      apiLogger.logRequest(
+        method,
+        url,
+        response.status,
+        response.statusText,
+        responseTime,
+        undefined,
+        responseSize
+      )
+
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`)
+        const errorMessage = `API Error: ${response.status} ${response.statusText}`
+        // Логируем ошибку
+        apiLogger.logRequest(
+          method,
+          url,
+          response.status,
+          response.statusText,
+          responseTime,
+          errorMessage,
+          responseSize
+        )
+        throw new Error(errorMessage)
       }
 
-      return await response.json()
+      const data = await response.json()
+      return data
     } catch (error) {
+      const responseTime = Date.now() - startTime
+      const errorMessage = error instanceof Error ? error.message : 'Unknown API error'
+      
+      // Логируем ошибку запроса
+      apiLogger.logRequest(
+        method,
+        url,
+        undefined,
+        undefined,
+        responseTime,
+        errorMessage
+      )
+
       if (error instanceof Error) {
-        console.error(`API request failed: ${error.message}`)
+        console.error(`API request failed: ${errorMessage}`)
         throw error
       }
       throw new Error('Unknown API error')
