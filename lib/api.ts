@@ -51,10 +51,22 @@ class ApiClient {
     const method = options.method || 'GET'
     const startTime = Date.now()
 
+    // Определяем Origin и Referer для CORS
+    // На сервере (SSR) используем домен сайта
+    const isServer = typeof window === 'undefined'
+    const origin = isServer 
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'http://qwertysb.beget.tech'
+      : window.location.origin
+    const referer = isServer
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'http://qwertysb.beget.tech'
+      : window.location.href
+
     const config: RequestInit = {
       ...options,
       headers: {
         'Content-Type': 'application/json',
+        'Origin': origin,
+        'Referer': referer,
         ...options.headers,
       },
     }
@@ -78,7 +90,9 @@ class ApiClient {
         response.statusText,
         responseTime,
         undefined,
-        responseSize
+        responseSize,
+        origin,
+        referer
       )
 
       if (!response.ok) {
@@ -91,7 +105,9 @@ class ApiClient {
           response.statusText,
           responseTime,
           errorMessage,
-          responseSize
+          responseSize,
+          origin,
+          referer
         )
         throw new Error(errorMessage)
       }
@@ -109,7 +125,10 @@ class ApiClient {
         undefined,
         undefined,
         responseTime,
-        errorMessage
+        errorMessage,
+        undefined,
+        origin,
+        referer
       )
 
       if (error instanceof Error) {

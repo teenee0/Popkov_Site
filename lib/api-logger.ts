@@ -15,6 +15,8 @@ interface ApiLogEntry {
   responseTime?: number
   error?: string
   responseSize?: number
+  origin?: string
+  referer?: string
 }
 
 class ApiLogger {
@@ -51,7 +53,9 @@ class ApiLogger {
     statusText?: string,
     responseTime?: number,
     error?: string,
-    responseSize?: number
+    responseSize?: number,
+    origin?: string,
+    referer?: string
   ): void {
     if (!this.isServer) {
       // На клиенте просто выводим в консоль
@@ -72,6 +76,8 @@ class ApiLogger {
       responseTime,
       error,
       responseSize,
+      origin,
+      referer,
     }
 
     const logLine = this.formatLogEntry(entry)
@@ -109,6 +115,14 @@ class ApiLogger {
 
     if (entry.responseSize !== undefined) {
       parts.push(`SIZE: ${entry.responseSize} bytes`)
+    }
+
+    if (entry.origin) {
+      parts.push(`ORIGIN: ${entry.origin}`)
+    }
+
+    if (entry.referer) {
+      parts.push(`REFERER: ${entry.referer}`)
     }
 
     return parts.join(' | ')
