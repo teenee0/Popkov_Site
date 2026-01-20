@@ -1,4 +1,4 @@
-# Popkov StroiMat - Сайт строительных материалов
+# BuildGood - Сайт строительных материалов
 
 Современный сайт для магазина строительных товаров с SSR и оптимизированным SEO.
 
@@ -69,7 +69,7 @@ const category = await categoriesApi.getBySlug('ceramic-tile')
 
 ```typescript
 export const siteConfig = {
-  name: "Popkov StroiMat",  // Измените здесь
+  name: "BuildGood",  // Измените здесь
   // ... другие настройки
 }
 ```

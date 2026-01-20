@@ -3,8 +3,8 @@
  * Здесь можно легко изменить название компании и другие настройки
  */
 export const siteConfig = {
-  name: "Popkov StroiMat",
-  nameShort: "StroiMat",
+  name: "BuildGood",
+  nameShort: "BuildGood",
   description: "Магазин плитки в Кокшетау. Широкий ассортимент керамической плитки и керамогранита высокого качества",
   city: "Кокшетау",
   url: "https://popkov-stroimat.ru",
