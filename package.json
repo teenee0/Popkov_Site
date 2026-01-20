@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4000",
-    "build": "UV_THREADPOOL_SIZE=1 NEXT_TELEMETRY_DISABLED=1 NODE_OPTIONS='--max-old-space-size=512' next build",
-    "build:single": "UV_THREADPOOL_SIZE=1 NEXT_TELEMETRY_DISABLED=1 NODE_OPTIONS='--max-old-space-size=512' next build",
-    "build:no-lint": "UV_THREADPOOL_SIZE=1 NEXT_TELEMETRY_DISABLED=1 SKIP_ENV_VALIDATION=true NODE_OPTIONS='--max-old-space-size=512' next build --no-lint",
+    "build": "UV_THREADPOOL_SIZE=1 NEXT_TELEMETRY_DISABLED=1 NODE_OPTIONS='--max-old-space-size=512' NODE_ENV=production next build",
+    "build:single": "UV_THREADPOOL_SIZE=1 NEXT_TELEMETRY_DISABLED=1 NODE_OPTIONS='--max-old-space-size=512' NODE_ENV=production next build",
+    "build:no-lint": "UV_THREADPOOL_SIZE=1 NEXT_TELEMETRY_DISABLED=1 SKIP_ENV_VALIDATION=true NODE_OPTIONS='--max-old-space-size=512' NODE_ENV=production next build --no-lint",
     "start": "next start",
     "lint": "next lint"
   },

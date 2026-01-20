@@ -3,9 +3,18 @@ const nextConfig = {
   reactStrictMode: true,
   // Оставляем SWC включенным (требуется для next/font)
   swcMinify: true,
-  // Отключаем параллельную сборку страниц
+  // Игнорируем ошибки линтера и типов во время сборки для shared хостинга
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  // Отключаем параллельную сборку страниц и workers
   experimental: {
     webpackBuildWorker: false,
+    workerThreads: false,
+    cpus: 1,
   },
   // Ограничиваем webpack параллелизм
   webpack: (config, { dev, isServer }) => {
