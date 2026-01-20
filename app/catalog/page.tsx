@@ -5,6 +5,11 @@ import Link from 'next/link'
 import styles from './page.module.css'
 import { siteConfig } from '@/config/site'
 
+// Принудительно используем динамическую генерацию (SSR) вместо статической (SSG)
+// Это гарантирует, что данные будут загружаться при каждом запросе страницы
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
   title: 'Каталог',
   description: `Каталог плитки в ${siteConfig.city}. Широкий ассортимент керамической плитки и керамогранита`,
