@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4000",
-    "build": "next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=512' next build",
+    "build:single": "NODE_OPTIONS='--max-old-space-size=512' UV_THREADPOOL_SIZE=1 next build",
     "start": "next start",
     "lint": "next lint"
   },

@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Настройки для shared хостинга с ограничениями на потоки
+  swcMinify: true,
   images: {
     remotePatterns: [
       {
