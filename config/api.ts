@@ -4,15 +4,6 @@
  */
 
 const getApiBaseUrl = () => {
-  // В production используем переменную окружения
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    const url = process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '') // Убираем trailing slash
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔧 API URL (Production):', url)
-    }
-    return url
-  }
-
   // В development используем локальный сервер по умолчанию
   if (process.env.NODE_ENV === 'development') {
     const devUrl = process.env.NEXT_PUBLIC_DEV_API_URL || 'http://127.0.0.1:8000'
@@ -21,9 +12,16 @@ const getApiBaseUrl = () => {
     return url
   }
 
-  // Fallback для production, если не указан NEXT_PUBLIC_API_URL
-  console.warn('⚠️ NEXT_PUBLIC_API_URL не установлен, используется fallback URL')
-  return 'http://127.0.0.1:8000'
+  // В production используем переменную окружения или продакшн URL по умолчанию
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    const url = process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '') // Убираем trailing slash
+    console.log('🔧 API URL (Production from env):', url)
+    return url
+  }
+
+  // Fallback для production - используем продакшн API
+  console.log('🔧 API URL (Production default): https://api.vendorvillage.store')
+  return 'https://api.vendorvillage.store'
 }
 
 export const apiConfig = {

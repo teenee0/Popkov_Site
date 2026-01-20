@@ -125,16 +125,18 @@ export const categoriesApi = {
   /**
    * Получить все категории
    * API возвращает массив категорий напрямую
+   * Использует правильный URL в зависимости от окружения (dev: 8000, prod: api.vendorvillage.store)
    */
   getAll: async (params?: Record<string, string>): Promise<Category[]> => {
-    return apiClient.get<Category[]>('https://api.vendorvillage.store/marketplace/api/categories/', params)
+    return apiClient.get<Category[]>(getApiUrl('categories'), params)
   },
 
   /**
    * Получить категорию по ID
+   * Использует правильный URL в зависимости от окружения (dev: 8000, prod: api.vendorvillage.store)
    */
   getById: async (id: number): Promise<Category> => {
-    return apiClient.get<Category>(`https://api.vendorvillage.store/marketplace/api/categories/${id}/`)
+    return apiClient.get<Category>(`${getApiUrl('categories')}${id}/`)
   },
 }
 
