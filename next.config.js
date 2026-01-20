@@ -1,8 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Настройки для shared хостинга с ограничениями на потоки
-  swcMinify: true,
+  // Отключаем SWC компилятор (Rust-based) для shared хостинга
+  // Используем Babel вместо него, чтобы избежать проблем с потоками
+  swcMinify: false,
+  // Отключаем параллельную сборку страниц
+  experimental: {
+    webpackBuildWorker: false,
+    // Отключаем использование Rust компилятора где возможно
+    serverComponentsExternalPackages: [],
+  },
+  // Ограничиваем webpack параллелизм
+  webpack: (config, { dev, isServer }) => {
+    // Ограничиваем количество параллельных задач до 1
+    config.parallelism = 1
+    // Отключаем кэширование для избежания проблем с потоками
+    if (!dev) {
+      config.cache = false
+    }
+    return config
+  },
   images: {
     remotePatterns: [
       {
