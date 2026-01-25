@@ -60,7 +60,7 @@ class ApiClient {
     const referer = isServer
       ? process.env.NEXT_PUBLIC_SITE_URL || 'http://qwertysb.beget.tech'
       : window.location.href
-
+    
     const config: RequestInit = {
       ...options,
       headers: {
