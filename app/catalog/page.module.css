@@ -124,6 +124,21 @@
   font-size: 1.25rem;
 }
 
+.backBlock {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.backLink {
+  color: var(--color-primary);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.backLink:hover {
+  color: var(--color-primary-dark);
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
   .catalog {

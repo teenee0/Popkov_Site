@@ -1,22 +1,12 @@
-/**
- * Конфигурация сайта
- * Здесь можно легко изменить название компании и другие настройки
- */
 export const siteConfig = {
-  name: "BuildGood",
-  nameShort: "BuildGood",
-  description: "Магазин плитки в Кокшетау. Широкий ассортимент керамической плитки и керамогранита высокого качества",
-  city: "Кокшетау",
-  url: "https://popkov-stroimat.ru",
-  phone: "+7 (700) 203-30-03",
-  email: "info@popkov-stroimat.ru",
-  address: "Центральный рынок, ул. Ахмета Байтурсынова, 34а, 1 этаж, г. Кокшетау",
+  name: 'BuildGood',
+  city: 'Кокшетау',
+  description:
+    'Магазин плитки и керамогранита. Широкий ассортимент, доставка, консультации.',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com',
+  phone: '+7 (700) 203-30-03',
+  address: 'Центральный рынок, ул. Ахмета Байтурсынова, 34а, 1 этаж',
   social: {
-    vk: "https://vk.com/popkovstroimat",
-    telegram: "https://t.me/popkovstroimat",
-    whatsapp: "https://wa.me/77002033003",
+    vk: '',
   },
-} as const;
-
-export type SiteConfig = typeof siteConfig;
-
+}

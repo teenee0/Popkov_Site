@@ -8,6 +8,7 @@ import styles from './Header.module.css'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [logoError, setLogoError] = useState(false)
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
@@ -23,13 +24,18 @@ export default function Header() {
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
           <div className={styles.logoImage}>
-            <Image
-              src="/images/logo.png"
-              alt={siteConfig.name}
-              width={50}
-              height={50}
-              priority
-            />
+            {!logoError ? (
+              <Image
+                src="/images/logo.png"
+                alt={siteConfig.name}
+                width={50}
+                height={50}
+                priority
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <span className={styles.logoFallback}>{siteConfig.name.charAt(0)}</span>
+            )}
           </div>
           <span className={styles.logoText}>{siteConfig.name}</span>
         </Link>

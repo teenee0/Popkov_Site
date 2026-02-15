@@ -1,10 +1,7 @@
-import { apiConfig, getApiUrl } from '@/config/api'
-import { apiLogger } from './api-logger'
+import { getApiBase, apiPaths } from '@/config/api'
 
-/**
- * Типы для API ответов
- */
-export interface Category {
+/** Ответ API для одной категории (CategorySimpleSerializer) */
+export interface CategoryApiItem {
   id: number
   name: string
   description: string | null
@@ -15,214 +12,173 @@ export interface Category {
   is_active: boolean
 }
 
-export interface ApiResponse<T> {
-  count: number
-  next: string | null
-  previous: string | null
-  results: T[]
+/** Категория для использования в приложении */
+export interface Category {
+  id: number
+  name: string
+  description: string | null
+  page_identificator: string | null
+  image: string | null
+  image_url: string | null
+  is_active: boolean
+  ordering: number
 }
 
-export interface ApiResponse<T> {
-  count: number
-  next: string | null
-  previous: string | null
-  results: T[]
+/** Ответ GET /marketplace/api/categories/<id>/ */
+export interface CategoryWithChildrenResponse {
+  category: CategoryApiItem
+  children: CategoryApiItem[]
+  has_all_descendants?: boolean
+  should_redirect?: boolean
+  redirect_to?: string
 }
 
-/**
- * Базовый класс для работы с API
- */
-class ApiClient {
-  private baseUrl: string
+function mapCategoryFromApi(item: CategoryApiItem, baseUrl: string): Category {
+  const imageUrl = item.big_image || item.small_image
+  const fullImageUrl =
+    imageUrl && !imageUrl.startsWith('http')
+      ? `${baseUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`
+      : imageUrl
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl
-  }
-
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
-    // Если endpoint уже полный URL, используем его напрямую, иначе добавляем baseUrl
-    const url = endpoint.startsWith('http') 
-      ? endpoint 
-      : `${this.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`
-    
-    const method = options.method || 'GET'
-    const startTime = Date.now()
-
-    // Определяем Origin и Referer для CORS
-    // На сервере (SSR) используем домен сайта
-    const isServer = typeof window === 'undefined'
-    const origin = isServer 
-      ? process.env.NEXT_PUBLIC_SITE_URL || 'http://qwertysb.beget.tech'
-      : window.location.origin
-    const referer = isServer
-      ? process.env.NEXT_PUBLIC_SITE_URL || 'http://qwertysb.beget.tech'
-      : window.location.href
-    
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        'Origin': origin,
-        'Referer': referer,
-        ...options.headers,
-      },
-    }
-
-    try {
-      const response = await fetch(url, {
-        ...config,
-        signal: AbortSignal.timeout(apiConfig.timeout),
-      })
-
-      const responseTime = Date.now() - startTime
-      const responseSize = response.headers.get('content-length')
-        ? parseInt(response.headers.get('content-length') || '0', 10)
-        : undefined
-
-      // Логируем успешный запрос
-      apiLogger.logRequest(
-        method,
-        url,
-        response.status,
-        response.statusText,
-        responseTime,
-        undefined,
-        responseSize,
-        origin,
-        referer
-      )
-
-      if (!response.ok) {
-        const errorMessage = `API Error: ${response.status} ${response.statusText}`
-        // Логируем ошибку
-        apiLogger.logRequest(
-          method,
-          url,
-          response.status,
-          response.statusText,
-          responseTime,
-          errorMessage,
-          responseSize,
-          origin,
-          referer
-        )
-        throw new Error(errorMessage)
-      }
-
-      const data = await response.json()
-      return data
-    } catch (error) {
-      const responseTime = Date.now() - startTime
-      const errorMessage = error instanceof Error ? error.message : 'Unknown API error'
-      
-      // Логируем ошибку запроса
-      apiLogger.logRequest(
-        method,
-        url,
-        undefined,
-        undefined,
-        responseTime,
-        errorMessage,
-        undefined,
-        origin,
-        referer
-      )
-
-      if (error instanceof Error) {
-        console.error(`API request failed: ${errorMessage}`)
-        throw error
-      }
-      throw new Error('Unknown API error')
-    }
-  }
-
-  /**
-   * GET запрос
-   */
-  async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
-    let url = endpoint
-    if (params) {
-      const searchParams = new URLSearchParams(params)
-      url += `?${searchParams.toString()}`
-    }
-    return this.request<T>(url, { method: 'GET' })
-  }
-
-  /**
-   * POST запрос
-   */
-  async post<T>(endpoint: string, data: unknown): Promise<T> {
-    return this.request<T>(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-  }
-
-  /**
-   * PUT запрос
-   */
-  async put<T>(endpoint: string, data: unknown): Promise<T> {
-    return this.request<T>(endpoint, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    })
-  }
-
-  /**
-   * DELETE запрос
-   */
-  async delete<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'DELETE' })
+  return {
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    page_identificator: item.page_identificator,
+    image: item.big_image || item.small_image,
+    image_url: fullImageUrl,
+    is_active: item.is_active,
+    ordering: item.ordering,
   }
 }
 
-// Создаем экземпляр клиента
-export const apiClient = new ApiClient(apiConfig.baseUrl)
-
-/**
- * API функции для работы с категориями
- */
 export const categoriesApi = {
-  /**
-   * Получить все категории
-   * API возвращает массив категорий напрямую
-   * Использует правильный URL в зависимости от окружения (dev: 8000, prod: api.vendorvillage.store)
-   */
-  getAll: async (params?: Record<string, string>): Promise<Category[]> => {
-    return apiClient.get<Category[]>(getApiUrl('categories'), params)
+  /** Список корневых категорий — GET /marketplace/api/categories/ */
+  async getAll(): Promise<Category[]> {
+    const base = getApiBase()
+    if (!base) {
+      return getMockCategories()
+    }
+    try {
+      const url = `${base}${apiPaths.categories()}`
+      const res = await fetch(url, {
+        next: { revalidate: 0 },
+        headers: { Accept: 'application/json' },
+      })
+      if (!res.ok) return getMockCategories()
+      const data: CategoryApiItem[] = await res.json()
+      if (!Array.isArray(data)) return getMockCategories()
+      return data
+        .filter((cat) => cat.is_active)
+        .sort((a, b) => a.ordering - b.ordering)
+        .map((item) => mapCategoryFromApi(item, base))
+    } catch {
+      return getMockCategories()
+    }
   },
 
-  /**
-   * Получить категорию по ID
-   * Использует правильный URL в зависимости от окружения (dev: 8000, prod: api.vendorvillage.store)
-   */
-  getById: async (id: number): Promise<Category> => {
-    return apiClient.get<Category>(`${getApiUrl('categories')}${id}/`)
-  },
 }
 
-/**
- * API функции для работы с товарами
- */
-export const productsApi = {
-  /**
-   * Получить все товары
-   */
-  getAll: async (params?: Record<string, string>): Promise<ApiResponse<unknown>> => {
-    return apiClient.get<ApiResponse<unknown>>(
-      getApiUrl('products'),
-      params
+/** Ответ GET /marketplace/api/categories/<id>/ — категория и дочерние (уже замаплено) */
+export type CategoryWithChildrenMapped = {
+  category: Category
+  children: Category[]
+  has_all_descendants?: boolean
+  should_redirect?: boolean
+  redirect_to?: string
+}
+
+/** Одна категория и её дочерние — GET /marketplace/api/categories/<id>/ (SSR) */
+export async function getCategoryWithChildren(
+  id: number | string
+): Promise<CategoryWithChildrenMapped | null> {
+  const base = getApiBase()
+  if (!base) return null
+  try {
+    const url = `${base}${apiPaths.categoryById(id)}`
+    const res = await fetch(url, {
+      next: { revalidate: 0 },
+      headers: { Accept: 'application/json' },
+    })
+    if (!res.ok) return null
+    const data: CategoryWithChildrenResponse = await res.json()
+    const category = mapCategoryFromApi(data.category, base)
+    const children = (data.children || []).map((item) =>
+      mapCategoryFromApi(item, base)
     )
-  },
-
-  /**
-   * Получить товар по ID
-   */
-  getById: async (id: number): Promise<unknown> => {
-    return apiClient.get<unknown>(`${getApiUrl('products')}${id}/`)
-  },
+    return {
+      category,
+      children,
+      has_all_descendants: data.has_all_descendants,
+      should_redirect: data.should_redirect,
+      redirect_to: data.redirect_to,
+    }
+  } catch {
+    return null
+  }
 }
 
+function getMockCategories(): Category[] {
+  return [
+    {
+      id: 1,
+      name: 'Керамическая плитка',
+      description: 'Широкий выбор керамической плитки для любых помещений',
+      page_identificator: 'ceramic',
+      image: null,
+      image_url: null,
+      is_active: true,
+      ordering: 1,
+    },
+    {
+      id: 2,
+      name: 'Керамогранит',
+      description: 'Прочная и долговечная плитка из керамогранита',
+      page_identificator: 'porcelain',
+      image: null,
+      image_url: null,
+      is_active: true,
+      ordering: 2,
+    },
+    {
+      id: 3,
+      name: 'Плитка для ванной',
+      description: 'Влагостойкая плитка для ванных комнат и санузлов',
+      page_identificator: 'bathroom',
+      image: null,
+      image_url: null,
+      is_active: true,
+      ordering: 3,
+    },
+    {
+      id: 4,
+      name: 'Плитка для кухни',
+      description: 'Практичная и легко моющаяся плитка для кухни',
+      page_identificator: 'kitchen',
+      image: null,
+      image_url: null,
+      is_active: true,
+      ordering: 4,
+    },
+    {
+      id: 5,
+      name: 'Напольная плитка',
+      description: 'Износостойкая плитка для пола различных помещений',
+      page_identificator: 'floor',
+      image: null,
+      image_url: null,
+      is_active: true,
+      ordering: 5,
+    },
+    {
+      id: 6,
+      name: 'Декоративная плитка',
+      description: 'Эксклюзивная декоративная плитка и мозаика',
+      page_identificator: 'decorative',
+      image: null,
+      image_url: null,
+      is_active: true,
+      ordering: 6,
+    },
+  ]
+}

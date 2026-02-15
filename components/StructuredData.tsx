@@ -13,7 +13,6 @@ export default function StructuredData() {
       addressCountry: 'KZ',
     },
     telephone: siteConfig.phone,
-    email: siteConfig.email,
     url: siteConfig.url,
     priceRange: '$$',
     openingHoursSpecification: {

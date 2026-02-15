@@ -66,19 +66,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             </div>
           </a>
           <a
-            href={siteConfig.social.telegram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.contactButton}
-            onClick={onClose}
-          >
-            <span className={styles.icon}>✈️</span>
-            <div className={styles.buttonContent}>
-              <span className={styles.buttonTitle}>Telegram</span>
-              <span className={styles.buttonSubtitle}>Написать в Telegram</span>
-            </div>
-          </a>
-          <a
             href={`tel:${phoneNumber}`}
             className={styles.contactButton}
             onClick={onClose}

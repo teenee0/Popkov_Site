@@ -1,9 +1,13 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState } from 'react'
 import { siteConfig } from '@/config/site'
 import styles from './Footer.module.css'
 
 export default function Footer() {
+  const [logoError, setLogoError] = useState(false)
   const currentYear = new Date().getFullYear()
 
   const footerLinks = {
@@ -29,12 +33,17 @@ export default function Footer() {
           <div className={styles.company}>
             <Link href="/" className={styles.logo}>
               <div className={styles.logoImage}>
-                <Image
-                  src="/images/logo.png"
-                  alt={siteConfig.name}
-                  width={50}
-                  height={50}
-                />
+                {!logoError ? (
+                  <Image
+                    src="/images/logo.png"
+                    alt={siteConfig.name}
+                    width={50}
+                    height={50}
+                    onError={() => setLogoError(true)}
+                  />
+                ) : (
+                  <span className={styles.logoFallback}>{siteConfig.name.charAt(0)}</span>
+                )}
               </div>
               <span className={styles.logoText}>{siteConfig.name}</span>
             </Link>
@@ -76,15 +85,10 @@ export default function Footer() {
                     {siteConfig.phone}
                   </a>
                 </li>
-                <li>
-                  <a href={`mailto:${siteConfig.email}`} className={styles.contactLink}>
-                    {siteConfig.email}
-                  </a>
-                </li>
                 <li className={styles.address}>{siteConfig.address}</li>
               </ul>
-              <div className={styles.social}>
-                {siteConfig.social.vk && (
+              {siteConfig.social.vk ? (
+                <div className={styles.social}>
                   <a
                     href={siteConfig.social.vk}
                     target="_blank"
@@ -94,19 +98,8 @@ export default function Footer() {
                   >
                     VK
                   </a>
-                )}
-                {siteConfig.social.telegram && (
-                  <a
-                    href={siteConfig.social.telegram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.socialLink}
-                    aria-label="Telegram"
-                  >
-                    TG
-                  </a>
-                )}
-              </div>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

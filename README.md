@@ -1,108 +1,43 @@
-# BuildGood - Сайт строительных материалов
+# Сайт Попков — плитка в Актобе
 
-Современный сайт для магазина строительных товаров с SSR и оптимизированным SEO.
+Next.js сайт с SSR (Server-Side Rendering). Подходит для размещения на арендованном хостинге.
 
-## Технологии
+## Запуск
 
-- **Next.js 14** - React фреймворк с SSR
-- **TypeScript** - Типизированный JavaScript
-- **CSS Modules** - Модульные стили
+- **Разработка (dev):** порт **9999**
+  ```bash
+  npm run dev
+  ```
+  Сайт: http://localhost:9999
 
-## Быстрый старт
+- **Продакшен (prod):** порт **8899**
+  ```bash
+  npm run build
+  npm start
+  ```
+  Сайт: http://localhost:8899
 
-1. Установите зависимости:
-```bash
-npm install
-```
+## Структура
 
-2. Настройте переменные окружения:
-```bash
-# Скопируйте пример файла
-cp env.example .env.local
+- `app/` — страницы (App Router)
+  - `page.tsx` — главная
+  - `catalog/` — каталог (SSR, данные с API или мок)
+  - `about/`, `contacts/`, `delivery/`, `payment/` — информационные страницы
+- `components/` — Header, Footer, ContactModal, StructuredData
+- `config/site.ts` — настройки сайта (название, город, контакты)
+- `lib/api.ts` — API категорий (переменная `NEXT_PUBLIC_API_URL` для бэкенда)
+- `lib/image-utils.ts` — утилиты для изображений категорий
 
-# Отредактируйте .env.local и укажите URL вашего API сервера
-```
+## Конфигурация
 
-3. Запустите dev-сервер:
-```bash
-npm run dev
-```
+- **Сайт:** `config/site.ts` — имя, город, телефон, адрес, соцсети.
+- **API (отдельно для dev и prod):**
+  - Разработка: создайте `.env.development` с `API_URL=http://127.0.0.1:8000` (или ваш хост бэкенда).
+  - Продакшен: создайте `.env.production` с `API_URL=https://ваш-api-хост.com`.
+  - Next.js подставляет `.env.development` при `npm run dev` и `.env.production` при `npm run build`/`npm start`.
+  - Используются ручки: `GET /marketplace/api/categories/` (список корневых категорий), `GET /marketplace/api/categories/<id>/` (категория и дочерние). Без `API_URL` каталог показывает мок-данные.
+- **Логотип:** положите `logo.png` в `public/images/`. Если файла нет, в шапке и подвале показывается первая буква названия.
 
-4. Откройте [http://localhost:4000](http://localhost:4000) в браузере
+## Хостинг
 
-## Конфигурация API
-
-### Разработка (Development)
-
-Для локальной разработки создайте файл `.env.local`:
-
-```env
-NEXT_PUBLIC_DEV_API_URL=http://127.0.0.1:8000
-```
-
-### Production
-
-Для production установите переменную окружения:
-
-```env
-NEXT_PUBLIC_API_URL=https://api.yourdomain.com
-```
-
-### Использование API
-
-```typescript
-import { categoriesApi } from '@/lib/api'
-
-// Получить все категории
-const categories = await categoriesApi.getAll()
-
-// Получить категорию по ID
-const category = await categoriesApi.getById(1)
-
-// Получить категорию по slug
-const category = await categoriesApi.getBySlug('ceramic-tile')
-```
-
-## Изменение названия компании
-
-Название компании и другие настройки можно легко изменить в файле `config/site.ts`:
-
-```typescript
-export const siteConfig = {
-  name: "BuildGood",  // Измените здесь
-  // ... другие настройки
-}
-```
-
-## Структура проекта
-
-```
-├── app/                 # App Router (Next.js 14)
-│   ├── layout.tsx      # Корневой layout с SEO метаданными
-│   ├── page.tsx        # Главная страница
-│   └── globals.css     # Глобальные стили
-├── components/          # React компоненты
-│   ├── Header.tsx      # Шапка сайта
-│   └── Footer.tsx      # Футер сайта
-├── config/             # Конфигурация
-│   ├── site.ts        # Настройки сайта и компании
-│   └── api.ts         # Настройки API
-└── lib/               # Утилиты
-    └── api.ts         # API клиент
-```
-
-## SEO оптимизация
-
-- Server-Side Rendering (SSR) для всех страниц
-- Оптимизированные meta-теги
-- Open Graph метаданные
-- Структурированные данные JSON-LD
-- Локальная оптимизация для Кокшетау
-
-## Цветовая схема
-
-- **Основной цвет**: #DC2626 (красный)
-- **Фон**: #FFFFFF (белый)
-- **Текст**: #1F2937 (темно-серый)
-
-Цвета можно изменить в `app/globals.css` в переменных CSS.
+Сборка локально и загрузка на сервер описана в [BUILD_LOCAL.md](./BUILD_LOCAL.md). На сервере после распаковки: `npm install --production` и `npm start` (порт 8899 или задайте `PORT=8899` в окружении).

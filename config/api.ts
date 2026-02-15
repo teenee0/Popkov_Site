@@ -1,50 +1,19 @@
 /**
- * Конфигурация API
- * Использует переменные окружения для разных сред разработки
+ * Базовый URL API.
+ * Задаётся через переменные окружения отдельно для разработки и продакшена:
+ *
+ * - Разработка: создайте .env.development с API_URL=http://127.0.0.1:8000
+ * - Продакшен: создайте .env.production с API_URL=https://ваш-хост-api.com
+ *
+ * Next.js подставляет .env.development при npm run dev и .env.production при npm run build/start.
  */
-
-const getApiBaseUrl = () => {
-  // В development используем локальный сервер по умолчанию
-  if (process.env.NODE_ENV === 'development') {
-    const devUrl = process.env.NEXT_PUBLIC_DEV_API_URL || 'http://127.0.0.1:8000'
-    const url = devUrl.replace(/\/$/, '') // Убираем trailing slash
-    console.log('🔧 API URL (Development):', url)
-    return url
-  }
-
-  // В production используем переменную окружения или продакшн URL по умолчанию
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    const url = process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '') // Убираем trailing slash
-    console.log('🔧 API URL (Production from env):', url)
-    return url
-  }
-
-  // Fallback для production - используем продакшн API
-  console.log('🔧 API URL (Production default): https://api.vendorvillage.store')
-  return 'https://api.vendorvillage.store'
+export function getApiBase(): string {
+  const base = process.env.API_URL ?? ''
+  return base.replace(/\/$/, '')
 }
 
-export const apiConfig = {
-  baseUrl: getApiBaseUrl(),
-  endpoints: {
-    categories: '/marketplace/api/categories/',
-    products: '/marketplace/api/products/',
-    // Добавьте другие эндпоинты по мере необходимости
-  },
-  timeout: 10000, // 10 секунд
+export const apiPaths = {
+  categories: () => '/marketplace/api/categories/',
+  categoryById: (id: number | string) => `/marketplace/api/categories/${id}/`,
+  categoryProducts: (id: number | string) => `/marketplace/api/categories/${id}/products/`,
 } as const
-
-/**
- * Получить полный URL для эндпоинта
- */
-export const getApiUrl = (endpoint: keyof typeof apiConfig.endpoints): string => {
-  return `${apiConfig.baseUrl}${apiConfig.endpoints[endpoint]}`
-}
-
-/**
- * Проверка доступности API
- */
-export const isApiConfigured = (): boolean => {
-  return !!apiConfig.baseUrl
-}
-

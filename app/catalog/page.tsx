@@ -49,9 +49,7 @@ export default async function CatalogPage() {
           <div className={styles.grid}>
             {categories.map((category) => {
               const imageUrl = getCategoryImageUrl(category)
-              const categoryUrl = category.page_identificator
-                ? `/catalog/${category.page_identificator}`
-                : `/catalog/${category.id}`
+              const categoryUrl = `/catalog/${category.id}`
 
               return (
                 <Link
