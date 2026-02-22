@@ -1,7 +1,7 @@
 /**
  * Хост API в зависимости от окружения:
  * - Разработка (npm run dev): localhost:8000
- * - Продакшен (npm run build): https://api.vendorvillage.store
+ * - Продакшен (npm run build): https://api.axione.store
  *
  * Категории: {API_BASE_URL}/marketplace/api/categories/ и .../categories/237/
  */
@@ -11,8 +11,8 @@ const config = {
     MEDIA_BASE_URL: 'http://127.0.0.1:8000',
   },
   production: {
-    API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'https://api.vendorvillage.store',
-    MEDIA_BASE_URL: import.meta.env.VITE_MEDIA_BASE_URL || import.meta.env.VITE_API_BASE_URL || 'https://api.vendorvillage.store',
+    API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'https://api.axione.store',
+    MEDIA_BASE_URL: import.meta.env.VITE_MEDIA_BASE_URL || import.meta.env.VITE_API_BASE_URL || 'https://api.axione.store',
   },
 }
 
