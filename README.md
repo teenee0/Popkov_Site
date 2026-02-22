@@ -1,43 +1,40 @@
-# Сайт Попков — плитка в Актобе
+# Popkov_Site — сайт на React (Vite)
 
-Next.js сайт с SSR (Server-Side Rendering). Подходит для размещения на арендованном хостинге.
+Одностраничное приложение (SPA) на React по структуре как VendorVillage front: Vite, React, react-router-dom, без SSR.
 
 ## Запуск
 
-- **Разработка (dev):** порт **9999**
+- **Разработка (порт 9999):**
   ```bash
+  npm install
   npm run dev
   ```
   Сайт: http://localhost:9999
 
-- **Продакшен (prod):** порт **8899**
+- **Сборка и просмотр прода (порт 8899):**
   ```bash
   npm run build
-  npm start
+  npm run preview
   ```
   Сайт: http://localhost:8899
 
-## Структура
+## Структура (как у VendorVillage front)
 
-- `app/` — страницы (App Router)
-  - `page.tsx` — главная
-  - `catalog/` — каталог (SSR, данные с API или мок)
-  - `about/`, `contacts/`, `delivery/`, `payment/` — информационные страницы
-- `components/` — Header, Footer, ContactModal, StructuredData
-- `config/site.ts` — настройки сайта (название, город, контакты)
-- `lib/api.ts` — API категорий (переменная `NEXT_PUBLIC_API_URL` для бэкенда)
-- `lib/image-utils.ts` — утилиты для изображений категорий
+- `src/main.jsx` — точка входа
+- `src/App.jsx` — маршруты и layout (Header, Footer)
+- `src/pages/` — страницы: Home, Catalog, CatalogCategory, About, Contacts, Delivery, Payment
+- `src/components/` — Header, Footer, ContactModal
+- `src/config/` — environment.js (API_BASE_URL для dev/prod), site.js (название, город, контакты)
+- `src/api/` — categoriesApi.js (запросы к `/marketplace/api/categories/`)
 
 ## Конфигурация
 
-- **Сайт:** `config/site.ts` — имя, город, телефон, адрес, соцсети.
-- **API (отдельно для dev и prod):**
-  - Разработка: создайте `.env.development` с `API_URL=http://127.0.0.1:8000` (или ваш хост бэкенда).
-  - Продакшен: создайте `.env.production` с `API_URL=https://ваш-api-хост.com`.
-  - Next.js подставляет `.env.development` при `npm run dev` и `.env.production` при `npm run build`/`npm start`.
-  - Используются ручки: `GET /marketplace/api/categories/` (список корневых категорий), `GET /marketplace/api/categories/<id>/` (категория и дочерние). Без `API_URL` каталог показывает мок-данные.
-- **Логотип:** положите `logo.png` в `public/images/`. Если файла нет, в шапке и подвале показывается первая буква названия.
+- **Сайт:** `src/config/site.js` — имя, город, телефон, адрес.
+- **API (разные хосты для dev и prod):**
+  - **Разработка** (`npm run dev`): `http://127.0.0.1:8000` — категории: `/marketplace/api/categories/`, `/marketplace/api/categories/237/`.
+  - **Продакшен** (`npm run build`): `https://api.vendorvillage.store` — те же пути. Переопределить можно через `.env.production`: `VITE_API_BASE_URL=...`.
+- **Логотип:** `public/images/logo.png`.
 
 ## Хостинг
 
-Сборка локально и загрузка на сервер описана в [BUILD_LOCAL.md](./BUILD_LOCAL.md). На сервере после распаковки: `npm install --production` и `npm start` (порт 8899 или задайте `PORT=8899` в окружении).
+После `npm run build` папка `dist/` — статические файлы. Разместите содержимое `dist/` на любом хостинге (нужен SPA fallback: все маршруты ведут на `index.html`).

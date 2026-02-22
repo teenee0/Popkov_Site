@@ -1,0 +1,454 @@
+.wrap {
+  min-height: 100vh;
+  padding: 2rem 0 4rem;
+  background: var(--color-bg-light, #f5f5f5);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--color-text-light, #666);
+}
+
+.error p {
+  margin-bottom: 1rem;
+}
+
+.backButton {
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+  border: none;
+  background: none;
+  color: var(--color-primary, #c00);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Фото 5:7 */
+.gallery {
+  top: 1rem;
+}
+
+.mainImageWrap {
+  position: relative;
+  margin-bottom: 0.75rem;
+  aspect-ratio: 5 / 7;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: var(--color-white, #fff);
+}
+
+/* Трек листалки с анимацией (как на маркетплейсе) */
+.galleryTrack {
+  display: flex;
+  height: 100%;
+  transition: transform 0.3s ease-out;
+}
+
+.gallerySlide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white, #fff);
+}
+
+.gallerySlide .mainImageImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.gallerySlide .noImage {
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+}
+
+.mainImage {
+  aspect-ratio: 5 / 7;
+  background: var(--color-white, #fff);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.mainImageImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.noImage {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-light, #999);
+  font-size: 1rem;
+}
+
+/* Стрелки листалки */
+.arrowPrev,
+.arrowNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--color-text, #333);
+  z-index: 2;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.arrowPrev:hover,
+.arrowNext:hover {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.arrowPrev {
+  left: 12px;
+}
+
+.arrowNext {
+  right: 12px;
+}
+
+/* Мобильная: только свайп с анимацией и точки, без стрелок и без миниатюр */
+@media (max-width: 900px) {
+  .arrowPrev,
+  .arrowNext {
+    display: none !important;
+  }
+
+  .thumbnails {
+    display: none;
+  }
+}
+
+/* Точки (мобилка и комп) */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-border, #ddd);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.dot:hover {
+  background: var(--color-text-light, #999);
+}
+
+.dotActive {
+  background: var(--color-primary, #c00);
+  transform: scale(1.2);
+}
+
+/* Миниатюры 5:7 (только десктоп) */
+.thumbnails {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.thumb {
+  width: 56px;
+  aspect-ratio: 5 / 7;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-white, #fff);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.section {
+  margin-top: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text, #333);
+}
+
+.attrOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.attrBtn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border, #ddd);
+  border-radius: 8px;
+  background: var(--color-white, #fff);
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.attrBtn:hover:not(.attrBtnDisabled) {
+  border-color: var(--color-primary, #c00);
+  color: var(--color-primary, #c00);
+}
+
+.attrBtnActive {
+  border-color: var(--color-primary, #c00);
+  background: rgba(204, 0, 0, 0.06);
+  color: var(--color-primary, #c00);
+}
+
+.attrBtnDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.storeList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.storeItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border, #eee);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  background: var(--color-white, #fff);
+}
+
+.storeItemActive {
+  border-color: var(--color-primary, #c00);
+  background: rgba(204, 0, 0, 0.04);
+}
+
+.storeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.storeName {
+  font-weight: 600;
+  color: var(--color-text, #333);
+}
+
+.storeQty {
+  font-size: 0.9rem;
+  color: var(--color-text-light, #666);
+}
+
+.storePrice {
+  font-weight: 600;
+  color: var(--color-text, #333);
+}
+
+.storeSelect {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--color-primary, #c00);
+  border-radius: 6px;
+  background: var(--color-white, #fff);
+  color: var(--color-primary, #c00);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.storeSelect:hover {
+  background: var(--color-primary, #c00);
+  color: var(--color-white, #fff);
+}
+
+.showMore {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  color: var(--color-primary, #c00);
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.addToCart {
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-primary, #c00);
+  color: var(--color-white, #fff);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.addToCart:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.addToCart:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tabs {
+  margin-top: 1rem;
+  border: 1px solid var(--color-border, #eee);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-white, #fff);
+}
+
+.tabHead {
+  display: flex;
+  border-bottom: 1px solid var(--color-border, #eee);
+}
+
+.tabBtn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--color-text-light, #666);
+}
+
+.tabBtnActive {
+  font-weight: 600;
+  color: var(--color-primary, #c00);
+  border-bottom: 2px solid var(--color-primary, #c00);
+  margin-bottom: -1px;
+}
+
+.tabContent {
+  padding: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text, #333);
+}
+
+.specList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.specList li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--color-border, #f0f0f0);
+}
+
+.specList li:last-child {
+  border-bottom: none;
+}
+
+.specLabel {
+  font-weight: 500;
+  color: var(--color-text-light, #666);
+}
+
+.business {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border, #eee);
+  border-radius: 12px;
+  background: var(--color-white, #fff);
+}
+
+.businessLogo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.businessName {
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem 0;
+  color: var(--color-text, #333);
+}
+
+.businessDesc {
+  font-size: 0.9rem;
+  color: var(--color-text-light, #666);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.similar {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border, #eee);
+}
+
+.similarTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--color-text, #333);
+}

@@ -1,22 +1,20 @@
 {
   "name": "popkov-site",
-  "version": "1.0.0",
   "private": true,
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev -p 9999",
-    "build": "next build",
-    "start": "next start -p 8899",
-    "lint": "next lint"
+    "dev": "vite --port 4000",
+    "build": "vite build",
+    "preview": "vite preview --port 4000"
   },
   "dependencies": {
-    "next": "^14.2.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "typescript": "^5.0.0"
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.2.0"
   }
 }

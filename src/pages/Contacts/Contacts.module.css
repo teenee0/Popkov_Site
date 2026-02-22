@@ -1,0 +1,96 @@
+.page {
+  min-height: 100vh;
+  padding: 3rem 0 4rem;
+  background: var(--color-bg-light);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.subtitleLead {
+  color: var(--color-text-light);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.block {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.text,
+.link {
+  font-size: 1.125rem;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.link:hover {
+  color: var(--color-primary);
+}
+
+.mapWidget {
+  margin-top: 1.25rem;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.mapLinks {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-bg-light);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.mapLink:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .page { padding: 2rem 0 3rem; }
+  .container { padding: 0 1rem; }
+  .title { font-size: 2rem; }
+}

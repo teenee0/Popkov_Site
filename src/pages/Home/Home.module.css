@@ -1,0 +1,381 @@
+.home {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
+  padding: 6rem 0;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.heroTitleAccent {
+  display: block;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+.heroDescription {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  opacity: 0.95;
+}
+
+.heroActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.buttonPrimary {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.buttonPrimary:hover {
+  background: var(--color-bg-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  color: var(--color-primary);
+}
+
+.buttonSecondary {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: transparent;
+  color: var(--color-white);
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: 2px solid var(--color-white);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.buttonSecondary:hover {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+.categories {
+  padding: 5rem 0;
+  background: var(--color-bg-light);
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.categoriesLoading,
+.categoriesEmpty {
+  text-align: center;
+  color: var(--color-text-light);
+  font-size: 1.125rem;
+  padding: 2rem 0;
+}
+
+/* Сетка категорий (десктоп, когда категорий меньше 3) */
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Карусель категорий */
+/* Кнопки вынесены за края за счёт отрицательного margin обёртки */
+.carouselWrap {
+  position: relative;
+  margin: 0 -64px;
+  padding: 0 64px;
+}
+
+.carouselBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  padding: 0;
+}
+
+.carouselBtn:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+}
+
+
+.carouselWrap .carouselBtn:first-of-type {
+  left: 6px;
+}
+
+.carouselWrap .carouselBtn:last-of-type {
+  right: 6px;
+}
+
+.carouselDots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.carouselDot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-border);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.carouselDot:hover {
+  background: var(--color-text-light);
+}
+
+.carouselDotActive {
+  background: var(--color-primary);
+  transform: scale(1.2);
+}
+
+.categoriesCarousel {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.categoriesCarousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ровно 3 карточки в ряд на десктопе */
+.categoriesCarousel > a {
+  flex: 0 0 calc((100% - 2 * 1.25rem) / 3);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.categoryCard {
+  background: var(--color-white);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.categoryCard:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.15);
+}
+
+.categoryIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.categoryTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.categoryDescription {
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+.productsSection {
+  padding: 5rem 0;
+  background: var(--color-bg-light, #f8f8f8);
+}
+
+.productsGrid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.25rem !important;
+}
+
+.productsSeeAll {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.buttonRed {
+  display: inline-block;
+  padding: 0.875rem 2.5rem;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.buttonRed:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
+}
+
+.mapSection {
+  padding: 5rem 0;
+  background: var(--color-white);
+}
+
+.mapWrap {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.advantages {
+  padding: 5rem 0;
+  background: var(--color-bg-light);
+}
+
+.advantagesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.advantageCard {
+  text-align: center;
+  padding: 2rem;
+}
+
+.advantageIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.advantageTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.advantageDescription {
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+.cta {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.ctaContent {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.ctaDescription {
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.ctaActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 4rem 0; }
+  .heroTitle { font-size: 2rem; }
+  .heroDescription { font-size: 1.1rem; }
+  .sectionTitle { font-size: 2rem; }
+  .categories, .advantages, .productsSection { padding: 3rem 0; }
+  .productsGrid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
+  .categoriesGrid { grid-template-columns: 1fr; }
+  .carouselBtn { display: none !important; }
+  .carouselWrap { margin: 0; padding: 0; }
+  .categoriesCarousel > a { flex: 0 0 70vw; min-width: 0; }
+  .cta { padding: 3rem 0; }
+  .ctaTitle { font-size: 2rem; }
+  .ctaDescription { font-size: 1.1rem; }
+  .buttonPrimary, .buttonSecondary { width: 100%; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 1rem; }
+  .heroContent { padding: 0 1rem; }
+  .heroTitle { font-size: 1.75rem; }
+  .categoryCard { padding: 1.5rem; }
+}
