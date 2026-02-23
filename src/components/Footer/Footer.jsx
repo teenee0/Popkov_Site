@@ -8,13 +8,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   const footerLinks = {
-    catalog: [
-      { href: '/catalog/1', label: 'Керамическая плитка' },
-      { href: '/catalog/2', label: 'Керамогранит' },
-      { href: '/catalog/3', label: 'Плитка для ванной' },
-      { href: '/catalog/4', label: 'Плитка для кухни' },
-      { href: '/catalog/5', label: 'Напольная плитка' },
-    ],
+    catalog: [],
     info: [
       { href: '/about', label: 'О компании' },
       { href: '/delivery', label: 'Доставка' },
@@ -49,16 +43,9 @@ export default function Footer() {
 
           <div className={styles.links}>
             <div className={styles.linkGroup}>
-              <h3 className={styles.linkTitle}>Каталог</h3>
-              <ul className={styles.linkList}>
-                {footerLinks.catalog.map((link) => (
-                  <li key={link.href}>
-                    <Link to={link.href} className={styles.link}>
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <h3 className={styles.linkTitle}>
+                <Link to="/catalog" className={styles.link}>Каталог</Link>
+              </h3>
             </div>
             <div className={styles.linkGroup}>
               <h3 className={styles.linkTitle}>Информация</h3>
